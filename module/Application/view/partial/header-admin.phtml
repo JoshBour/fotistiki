@@ -3,7 +3,7 @@
     $child = $this->child;
     $isMobile = $this->mobile();
     $route = $this->routeName();
-    $pageTitle = (isset($child->pageTitle)) ? $child->pageTitle : "Info - " . ucfirst($route);
+    $pageTitle = (isset($child->pageTitle)) ? $child->pageTitle : "Fotistiki - " . ucfirst($route);
     $follow = (isset($child->follow)) ? "noindex, nofollow" : "feed, follow, archieve";
 
     // The website's title.
@@ -33,19 +33,12 @@
     $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath('images/favicon.ico')))
          ->headLink(array('rel' => 'gettext', 'type' => 'application/x-po', 'href' => $this->basePath('module/Application/language/'.$this->plugin('translate')->getTranslator()->getLocale().'.po')))
         ->prependStylesheet($this->basePath('css/jquery.dataTables.min.css'))
-//        ->prependStylesheet($this->basePath('css/scedit/jquery.sceditor.default.min.css'))
         ->prependStylesheet($this->basePath('css/scedit/default.min.css'))
-        ->prependStylesheet($this->basePath('css/admin-style.min.css'));
+        ->prependStylesheet(APPLICATION_ENV == "development" ? $this->basePath('css/admin-style.css') : $this->basePath('css/admin-style.min.css'));
 
-//    if ($isMobile) {
-//        $this->headLink()->appendStylesheet($this->basePath('css/mobile.css'));
-//    }
     echo $this->headLink();
 
     // Some scripts the must be outputted first follow below
     ?>
-    <script>
-        var baseUrl = '<?php echo $this->basePath(); ?>';
-        var isMobile = <?php echo $isMobile ? 'true':'false'; ?>;
-    </script>
+    <script>var baseUrl = '<?php echo $this->basePath(); ?>',isMobile = <?php echo $isMobile ? 'true':'false'; ?>;</script>
 </head>

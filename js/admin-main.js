@@ -1,588 +1,396 @@
 $(function () {
-    var body = $('body');
-    var flash = $('#flash');
-    var isSchedulePage = body.hasClass('schedulePage');
-    var focusedDiv;
-    if (flash.is(':visible')) {
-        flash.setRemoveTimeout(5000);
+    var body = $("body");
+    var t = $("#flash");
+    var n = body.hasClass("schedulePage");
+    var r;
+    if (t.is(":visible")) {
+        t.setRemoveTimeout(5e3)
     }
-    var gt = new Gettext({ 'domain': 'messages' });
-
-    /* ===================================================== */
-    /*               Initial Stuff and Anchors               */
-
-        setEditableTextfields();
-
-        $('.attributeSelect').each(function () {
-            var input = $(this);
-        });
-
-        $(window).on('beforeunload', function () {
-            if ($('.unsaved').length > 0)
-                return "There are some unsaved changes on this page.";
-        });
-
-        $('span[class$="Toggle"]').on('click', function () {
+    var i = new Gettext({domain: "messages"});
+    setEditableTextfields();
+    $(".attributeSelect").each(function () {
+        var e = $(this)
+    });
+    $(window).on("beforeunload", function () {
+        if ($(".unsaved").length > 0)return"There are some unsaved changes on this page."
+    });
+    $('span[class$="Toggle"]').on("click", function () {
+        resetActiveField();
+        var t = $(this).attr("class");
+        var n = $("#" + t.substr(0, t.length - 6));
+        if (n.is(":visible")) {
             resetActiveField();
-            var toggler = $(this).attr('class');
-            var element = $('#' + toggler.substr(0, toggler.length - 6));
-            if (element.is(':visible')) {
-                resetActiveField();
-                element.slideToggle("normal", function () {
-                    ofh = new $.fn.dataTable.FixedHeader(table);
-                });
-            } else {
-                element.slideToggle();
-                body.children(".fixedHeader").each(function () {
-                    $(this).remove();
-                });
-            }
-        });
-
-    /* ===================================================== */
-    /*                Editable Table Related                 */
-
-        $(window).on('resize', function () {
-            if (!focusedDiv) {
-                body.children(".fixedHeader").each(function () {
-                    $(this).remove();
-                });
-                dTable.draw();
-                ofh = new $.fn.dataTable.FixedHeader(dTable);
-            }
-        });
-
-        $('.editableTable td').on('mouseover mouseout', function () {
-            var cols = $('colgroup');
-            var i = $(this).prevAll('td').length;
-    //        $(this).parent().toggleClass('hover');
-            $(cols[i]).toggleClass('hover');
-        });
-
-        $('table').on('mouseleave', function () {
-            $('colgroup').removeClass('hover');
-        });
-
-        /**
-         * @description Submit the standardForm
-         */
-        $(document).on('submit', '.standardForm', function () {
-            if (confirm(gt.gettext("Are you sure you want to submit the form? All unsaved changes will be lost!"))) {
-                var form = $(this);
-                var parent = form.parent();
-                parent.toggleLoadingImage();
-                if(form.attr('id') == "productForm"){
-                    var data = [];
-                    form.find('.attributes li').each(function(){
-                        var entity = {};
-                        var liItem = $(this);
-                        entity["name"] = liItem.children('.attributeName').html();
-                        entity["value"] = liItem.children('.attributeValue').html();
-                        entity["position"] = liItem.children('.attributePosition').html();
-                        data.push(entity);
-                    });
-                }else{
-                    data = {};
-                }
-                form.ajaxSubmit({
-                    target: '#' + form.attr('id'),
-                    type: "post",
-                    data:{
-                      "extraData" : data
-                    },
-                    success: function (responseText) {
-                        if (responseText.redirect) {
-                            location.reload(true);
-                        }
-                        setEditableTextfields();
-                        parent.toggleLoadingImage();
-                    }
-                });
-            }
-            return false;
-        });
-
-        /**
-         * @description Manages the editable table when a cell is double clicked
-         */
-        $(document).on('dblclick', '.editableTable td', function () {
-            var td = $(this);
-            if (!td.hasClass('activeField') && !td.hasClass('editTextfield') && !td.hasClass('unEditable')) {
-                resetActiveField();
-                td.addClass('activeField');
-                var content = td.text();
-                var element;
-                var editPanel = $('#editPanel');
-                editPanel.appendTo(body);
-                var editInput = editPanel.children(':first');
-
-                // position related
-                var position = td.offset();
-                var width = td.outerWidth();
-                editPanel.css('width', width - 1);
-                editPanel.css('margin-left', position.left);
-                editPanel.css('top', position.top + td.outerHeight(true)).show();
-
-                var form = $('.standardForm');
-                var tableId = table.attr('id');
-                var pageId = table.attr('class').split(' ')[1].substr(7);
-                var id = td.attr('class').split(' ')[0].substr(pageId.length).lowerize();
-                if (td.hasClass('editSelect') || td.hasClass('editMultiSelect')) {
-                    element = td.hasClass('editMultiSelect') ? form.find('[name="' + pageId + "[" + id + '][]"]').clone() : form.find('[name="' + pageId + "[" + id + ']"]').clone();
-                    var options = element.find('option');
-                    if (td.hasClass('excludeCurrent')) {
-                        var rowId = dTable.row(td.parent()).data()[0];
-                        options.each(function () {
-                            var option = $(this);
-                            if (option.val() == rowId) option.detach();
-                        });
-                    }
-                    td.find('span[class^="option"]').each(function () {
-                        var optionId = $(this).attr('class').substr(7);
-                        options.filter(function () {
-                            return $(this).val() == optionId;
-                        }).attr('selected', 'selected');
-                    });
-                    editInput.replaceWith(element);
-                } else if (td.hasClass('editDatetime')) {
-                    if (content != '') {
-                        var date;
-                        var splitDate = content.split('-');
-                        date = new Date(splitDate[2], splitDate[1] - 1, splitDate[0])
-                    } else {
-                        date = new Date();
-                    }
-                    element = $('<input />', {
-                        "id": "mydate",
-                        "value": content
-                    });
-                    editInput.replaceWith(element).datePicker().focus();
-                } else if (td.hasClass('editFile') || td.hasClass('editImage')) {
-                    var fileForm = $('<form />', {
-                        "action": baseUrl + '/upload-file',
-                        "enctype": "multipart/form-data",
-                        "class": "fileForm"
-                    });
-                    $('<input />', {
-                        "type": "hidden",
-                        "name": "fileMeta",
-                        "value": td.children('.fileMeta').html()
-                    }).appendTo(fileForm);
-                    element = $('<input />', {
-                        "type": "file",
-                        "name": "uploadFile"
-                    }).appendTo(fileForm);
-                    editInput.replaceWith(fileForm).focus();
-                } else {
-                    element = form.find('[name="' + pageId + "[" + id + ']"]').clone();
-                    element.val(content);
-                    editInput.replaceWith(element);
-                }
-                element.addClass('editInput').focus();
-            }
-        });
-
-        /**
-         * @description Saves the edit panel if it's visible and the enter button is pressed
-         */
-        $(window).keypress(function (e) {
-            if (e.keyCode == 13) {
-                if ($('#editPanel').is(':visible')) {
-                    updateEditedField();
-                }
-            }
-        });
-
-        /**
-         * @description Saves the edit panel when done is pressed
-         */
-        $(document).on('click', '#editDone', function () {
-            updateEditedField();
-        });
-
-        var table = $('.editableTable');
-        var dTable = $('.editableTable, #changelogs').DataTable({
-            "lengthMenu": [
-                [5, 10, 25, 50, -1],
-                [5, 10, 25, 50, "All"]
-            ],
-            "aoColumnDefs": [
-                { 'bSortable': false, 'aTargets': table.find('th').length - 1 },
-
-                { "visible": false, "targets": [ 0 ] }
-            ],
-            "pagingType": "full_numbers",
-            "order": [
-                [ 1, "asc" ]
-            ],
-            "dom": 'C<"clear">lfrtip',
-            colVis: {
-                order: 'alpha'
-            },
-            "iDisplayLength": 5
-        }).on('length.dt', function (e, settings, len) {
+            n.slideToggle("normal", function () {
+                u = new $.fn.dataTable.FixedHeader(s)
+            })
+        } else {
+            n.slideToggle();
             body.children(".fixedHeader").each(function () {
-                $(this).remove();
+                $(this).remove()
+            })
+        }
+    });
+    $(window).on("resize", function () {
+        if (!r) {
+            body.children(".fixedHeader").each(function () {
+                $(this).remove()
             });
-            dTable.draw();
-            ofh = new $.fn.dataTable.FixedHeader(dTable);
-        });
-        var ofh = new $.fn.dataTable.FixedHeader(dTable);
-
-        /**
-         * @description Saves the changes to the database
-         */
-        $('#saveChanges').on('click', function () {
-            var entities = [];
-            var table = isSchedulePage ? $('.scheduleTable') : $('.editableTable');
-            var id = table.attr('class').split(' ')[1].substr(7);
-            var flag = false;
-            table.find('tbody .unsaved').each(function () {
-                var that = $(this);
-                var entity = {};
-                entity["id"] = dTable.row(that).data()[0];
-                that.children('td').each(function () {
-                    var td = $(this);
-                    if (td.hasClass('required')) {
-                        var value = "";
-                        if (td.hasClass('editTextfield')) {
-                            value = td.children('textarea').val();
-                        } else {
-                            value = td.text()
-                        }
-                        if (empty(value)) {
-                            td.addClass("redBorder");
-                            flag = true;
-                        }
-                    }
-                    td.removeClass("redBorder");
-                    if (!td.hasClass('delete')) {
-                        var field = td.attr('class').split(' ')[0].substr(id.length);
-                        if (td.hasClass('editImage')) {
-                            var fileImage = td.find('.fileImage');
-                            if (fileImage.hasClass('changed')) {
-                                var img = fileImage.children('img');
-                                if (img.length > 0) {
-                                    var split = img.attr('src').split('/');
-                                    entity[field] = split[split.length - 1];
-                                } else {
-                                    entity[field] = null;
-                                }
-                            }
-                        } else if (td.hasClass('editFile')) {
-                            var filename = td.children('.fileName');
-                            if (filename.hasClass("changed")) {
-                                var name = $.trim(filename.html());
-                                entity[field] = name != '-' ? name : null;
-                            }
-                        } else if (td.hasClass('editSelect')) {
-                            var option = td.children('span');
-                            if (option.length > 0)
-                                entity[field] = option.attr('class').substr(7);
-                        } else if (td.hasClass('editMultiSelect')) {
-                            var optionArray = [];
-                            td.children('span').each(function () {
-                                optionArray.push($(this).attr('class').substr(7));
-                            });
-                            entity[field] = optionArray.length > 0 ? optionArray : null;
-                        } else if (td.hasClass('editTextfield')) {
-                            entity[field] = td.children('textarea').val();
-                        }else if(td.hasClass('editList')){
-                            var fields = [];
-                            td.find('ul li').each(function(){
-                                var liItem = $(this);
-                                var entry = {};
-                                liItem.children('span').each(function(){
-                                   entry[$(this).attr('class')] = $(this).html();
-                                });
-                                fields.push(entry);
-                            });
-                            entity[field] = fields;
-                        } else {
-                            entity[field] = $.trim(td.text()) == "-" ? null : td.text();
-                        }
-                    }
-                });
-                entities.push(entity);
-                if (flag) return false;
-
-            });
-            if (flag) {
-                addMessage(gt.gettext("Some required fields are empty."));
-                return false;
-            }
-            console.log(entities);
-            if (entities.length > 0) {
-                $('tr.unsaved').removeClass('unsaved');
-                $.ajax({
-                    url: baseUrl + '/admin/' + table.attr('id') + '/save',
-                    type: "POST",
-                    data: {
-                        "entities": entities
-                    }
-                }).success(function (data) {
-                    if (data.success == 1) {
-    //                    dTable.draw();
-    //                    $('td.unsaved').removeClass('unsaved');
-                        location.reload(true);
-                    }
-                    addMessage(data.message);
-                }).error(function () {
-                    addMessage(gt.gettext("Something with wrong, please try again."));
-                });
-            } else {
-                addMessage(gt.gettext("There are no changes to save."));
-            }
-        });
-
-        /**
-         * @description Deletes a row/entry from the database
-         */
-        $(document).on('click','td.delete', function () {
-                if (confirm(gt.gettext("Are you sure about this action?"))) {
-                    var td = $(this);
-                    var url = table.attr('id');
-                    var id = dTable.row(td.parent()).data()[0]
-                    $.ajax({
-                        url: baseUrl + '/admin/' + url + '/remove',
-                        type: "POST",
-                        data: {
-                            "id": id
-                        }
-                    }).success(function (data) {
-                        if (data.success == 1) {
-                            dTable.row(td.parent()).remove().draw();
-                            location.reload(true);
-                        }
-                        addMessage(data.message);
-                    }).error(function () {
-                        addMessage(gt.gettext("Something with wrong, please try again."));
+            o.draw();
+            u = new $.fn.dataTable.FixedHeader(o)
+        }
+    });
+    $(".editableTable td").on("mouseover mouseout", function () {
+        var e = $("colgroup");
+        var t = $(this).prevAll("td").length;
+        $(e[t]).toggleClass("hover")
+    });
+    $("table").on("mouseleave", function () {
+        $("colgroup").removeClass("hover")
+    });
+    $(document).on("submit", ".standardForm", function () {
+        if (confirm(i.gettext("Are you sure you want to submit the form? All unsaved changes will be lost!"))) {
+            var e = $(this);
+            var t = e.parent();
+            t.toggleLoadingImage();
+            if (e.attr("id") == "productForm") {
+                var n = {};
+                e.find(".dynamicList").each(function () {
+                    var e = [];
+                    var t = $(this);
+                    t.children("li").each(function () {
+                        l = {};
+                        var t = $(this);
+                        t.children("span").each(function () {
+                            var e = $(this);
+                            l[e.attr("class").split(" ")[0]] = e.html()
+                        });
+                        e.push(l)
                     });
-                }
+                    n[t.attr("class").split(" ")[0]] = e
+                })
+            } else {
+                n = {}
             }
-        );
-
-    /* ===================================================== */
-    /*                Textfield Editor Related               */
-
-        /**
-         * @description Creates the text editor
-         */
-        $(document).on('click', '.textEditorToggle', function (e) {
-            var toggler = $(this);
-            var sourceTextArea = toggler.siblings('textarea');
-            sourceTextArea.addClass('activeTextfield');
-            var stageWrapper = $('<div/>', {
-                'id': "stageWrapper"
-            }).prependTo($('body'));
-
-            var stage = $('<div/>', {
-                'id': 'stage'
-            }).appendTo(stageWrapper);
-
-            var textareaWrapper = $('<div/>', {
-                'id': 'textareaWrapper'
-            }).appendTo(stage);
-
-            var textarea = $('<textarea/>', {
-                "id": "stageTextarea",
-                "html": sourceTextArea.val()
-            }).appendTo(textareaWrapper);
-
-            var doneBtn = $('<span />', {
-                "class": "done",
-                "html": "Done"
-            }).appendTo(textareaWrapper);
-
-            textarea.sceditor({
-                plugins: 'xhtml',
-                style: "../css/scedit/jquery.sceditor.default.min.css",
-                emoticonsRoot: "../images/",
-                disallowedTags: ['script', 'div']
-            });
-
-            focusedDiv = stageWrapper;
-            stageWrapper.focusLight();
-            body.addClass('unscrollable');
-        });
-
-        $(document).on('click', '#stage .done', function () {
-            var activeEditor = $('.activeTextfield');
-            var newVal = $('#stageTextarea').sceditor('instance').val();
-            if (activeEditor.val() != newVal) {
-                activeEditor.closest('tr').addClass('unsaved');
-                activeEditor.html(newVal);
+            console.log(n);
+            e.ajaxSubmit({target: "#" + e.attr("id"), type: "post", data: {extraData: n}, success: function (e) {
+                if (e.redirect) {
+                    location.reload(true)
+                }
+                setEditableTextfields();
+                t.toggleLoadingImage()
+            }})
+        }
+        return false
+    });
+    $(document).on("dblclick", ".editableTable td", function () {
+        var t = $(this);
+        if (!t.hasClass("activeField") && !t.hasClass("editTextfield") && !t.hasClass("unEditable")) {
+            resetActiveField();
+            t.addClass("activeField");
+            var n = t.text();
+            var r;
+            var i = $("#editPanel");
+            i.appendTo(body);
+            var u = i.children(":first");
+            var a = t.offset();
+            var f = t.outerWidth();
+            i.css("width", f - 1);
+            i.css("margin-left", a.left);
+            i.css("top", a.top + t.outerHeight(true)).show();
+            var l = $(".standardForm");
+            var c = s.attr("id");
+            var h = s.attr("class").split(" ")[1].substr(7);
+            var p = t.attr("class").split(" ")[0].substr(h.length).lowerize();
+            if (t.hasClass("editSelect") || t.hasClass("editMultiSelect")) {
+                r = t.hasClass("editMultiSelect") ? l.find('[name="' + h + "[" + p + '][]"]').clone() : l.find('[name="' + h + "[" + p + ']"]').clone();
+                var d = r.find("option");
+                if (t.hasClass("excludeCurrent")) {
+                    var v = o.row(t.parent()).data()[0];
+                    d.each(function () {
+                        var e = $(this);
+                        if (e.val() == v)e.detach()
+                    })
+                }
+                t.find('span[class^="option"]').each(function () {
+                    var e = $(this).attr("class").substr(7);
+                    d.filter(function () {
+                        return $(this).val() == e
+                    }).attr("selected", "selected")
+                });
+                u.replaceWith(r)
+            } else if (t.hasClass("editDatetime")) {
+                if (n != "") {
+                    var m;
+                    var g = n.split("-");
+                    m = new Date(g[2], g[1] - 1, g[0])
+                } else {
+                    m = new Date
+                }
+                r = $("<input />", {id: "mydate", value: n});
+                u.replaceWith(r).datePicker().focus()
+            } else if (t.hasClass("editFile") || t.hasClass("editImage")) {
+                var y = $("<form />", {action: baseUrl + "/upload-file", enctype: "multipart/form-data", "class": "fileForm"});
+                $("<input />", {type: "hidden", name: "fileMeta", value: t.children(".fileMeta").html()}).appendTo(y);
+                r = $("<input />", {type: "file", name: "uploadFile"}).appendTo(y);
+                u.replaceWith(y).focus()
+            } else {
+                r = l.find('[name="' + h + "[" + p + ']"]').clone();
+                r.val(n);
+                u.replaceWith(r)
             }
-            activeEditor.removeClass('activeTextfield');
-            focusedDiv.unfocusLight().detach();
-
-            body.removeClass('unscrollable');
-        });
-
-
-    /* ===================================================== */
-    /*                  Attributes  Related                  */
-
-        $(document).on('click', '.editAttributes', function () {
-            var span = $(this);
-
-            var stageWrapper = $('<div/>', {
-                'id': "stageWrapper",
-                'class' : "wider"
-            }).prependTo(body);
-
-            $(
-                '<div id="stage">' +
-                        '<div id="attributeList">' +
-                            '<table>' +
-                                '<thead>' +
-                                    '<tr>' +
-                                        '<th class="invisible">Id</th>' +
-                                        '<th>Name</th>' +
-                                        '<th>Value</th>' +
-                                        '<th class="invisible">Position</th>' +
-                                    '</tr>' +
-                                '</thead>' +
-                                '<tbody></tbody>' +
-                            '</table>' +
-                        '</div>' +
-                        '<div id="attributeOptions">' +
-                            '<span class="addAttribute button">Add Attribute</span>' +
-                            '<span class="removeAttribute button">Remove Attribute</span>' +
-                            '<span class="moveUp button">Move Up</span>' +
-                            '<span class="moveDown button">Move Down</span>' +
-                            '<span class="attributeEditDone button">Done</span> ' +
-                        '</div>' +
-                '</div>'
-            ).appendTo(stageWrapper);
-
-            var attributeListBody = $('#attributeList tbody');
-            span.siblings('ul').children('li').each(function(){
-                var attribute = $(this);
-                    attributeListBody.append(
-                        '<tr>' +
-                            '<td class="invisible">' +
-                                '<input type="text" class="attributeId" value="' + attribute.children('.attributeId').html() + '" />' +
-                            '</td>' +
-                            '<td>' +
-                                '<input type="text" class="attributeName" value="' + attribute.children('.attributeName').html() + '" />' +
-                            '</td>' +
-                            '<td>' +
-                                '<input type="text" class="attributeValue" value="' + attribute.children('.attributeValue').html() + '" />' +
-                            '</td>' +
-                            '<td class="invisible">' +
-                                '<input type="text" class="attributePosition" value="' + attribute.children('.attributePosition').html() + '" />' +
-                            '</td>' +
-                        '</tr>'
-                    )
-            });
-            span.addClass('activeEditedField');
-            focusedDiv = stageWrapper;
-            stageWrapper.focusLight();
-            body.addClass('unscrollable');
-        });
-
-        $(document).on('click', '.addAttribute', function(){
-            var attributeListBody = $('#attributeList tbody');
-            var lastPosition = parseInt(attributeListBody.find('tr:last-of-type .attributePosition').val());
-            lastPosition = empty(lastPosition) || isNaN(lastPosition) ? 1 : (lastPosition+1);
-            $(
-                '<tr>' +
-                    '<td class="invisible">' +
-                        '<input type="text" class="attributeId" />' +
-                    '</td>' +
-                    '<td>' +
-                        '<input type="text" class="attributeName" />' +
-                    '</td>' +
-                    '<td>' +
-                        '<input type="text" class="attributeValue" />' +
-                    '</td>' +
-                    '<td class="invisible">' +
-                        '<input type="text" class="attributePosition" value="' + lastPosition + '" />' +
-                    '</td>' +
-                '</tr>'
-            ).appendTo('#attributeList tbody');
-        });
-
-        $(document).on('click','#attributeList tbody tr',function(){
-           $(this).parent().find('tr.active').removeClass('active');
-                $(this).toggleClass('active');
-        });
-
-        $(document).on('click', '.moveUp', function(){
-            $('#attributeList').find('tr.active').each(function(){
-                var tr = $(this);
-                var prev = tr.prev('tr');
-                if(prev.length > 0){
-                    var position = tr.find('.attributePosition:first');
-                    var prevPosition = prev.find('.attributePosition:first');
-                    var temp = position.val();
-                    position.attr('value',prevPosition.val());
-                    prevPosition.attr('value',temp);
-                    prev.before(tr);
-                }
-            });
-        });
-
-        $(document).on('click', '.moveDown', function(){
-            $('#attributeList').find('tr.active').each(function(){
-                var tr = $(this);
-                var next = tr.next('tr');
-                if(next.length > 0){
-                    var position = tr.find('.attributePosition:first');
-                    var nextPosition = next.find('.attributePosition:first');
-                    var temp = position.val();
-                    position.attr('value',nextPosition.val());
-                    nextPosition.attr('value',temp);
-                    next.after(tr);
-                }
-            });
-        });
-
-        $(document).on('click','.removeAttribute',function(){
-            $('.activeEditedField').closest('tr').addClass('unsaved');
-            $('#attributeList').find('tr.active').detach();
-        });
-
-        $(document).on('click','.attributeEditDone',function(){
-            var activeEditedField = $('.activeEditedField');
-            var attributes = activeEditedField.siblings('ul');
-            attributes.empty();
-            $('#attributeList').find('tbody').children('tr').each(function(){
-                var tr = $(this);
-                var name = tr.find('.attributeName');
-                var value = tr.find('.attributeValue');
-                if(empty(name.val())){
-                    name.addClass('redBorder');
-                    flag = true;
-                }else{
-                    name.removeClass('redBorder');
-                }
-                if(empty(value.val())){
-                    value.addClass('redBorder');
-                    flag = true;
-                }else{
-                    value.removeClass('redBorder')
-                }
-                if(!flag){
-                    attributes.append(
-                            '<li>' +
-                            '<span class="attributeId">' + tr.find('.attributeId').val() + '</span>' +
-                            '<span class="attributeName">' + tr.find('.attributeName').val() + '</span>' +
-                            '<span class="attributeValue">' + tr.find('.attributeValue').val() + '</span>' +
-                            '<span class="attributePosition">' + tr.find('.attributePosition').val() + '</span>' +
-                            '</li>'
-                    );
-                }
-            });
-            if(!flag){
-                var flag = false;
-                if(activeEditedField.closest('.editableTable').length > 0 && attributes.children('li').length > 0){
-                    activeEditedField.closest('tr').addClass('unsaved');
-                }
-                focusedDiv.unfocusLight().detach();
-                activeEditedField.removeClass('activeEditedField');
-                body.removeClass('unscrollable');
+            r.addClass("editInput").focus()
+        }
+    });
+    $(window).keypress(function (e) {
+        if (e.keyCode == 13) {
+            if ($("#editPanel").is(":visible")) {
+                updateEditedField()
             }
+        }
+    });
+    $(document).on("click", "#editDone", function () {
+        updateEditedField()
+    });
+    var s = $(".editableTable");
+    var o = $(".editableTable, #changelogs").DataTable({lengthMenu: [
+        [5, 10, 25, 50, -1],
+        [5, 10, 25, 50, "All"]
+    ], stateSave: true, aoColumnDefs: [
+        {bSortable: false, aTargets: s.find("th").length - 1},
+        {visible: false, targets: [0]}
+    ], pagingType: "full_numbers", order: [
+        [1, "asc"]
+    ], dom: 'C<"clear">lfrtip', colVis: {order: "alpha"}, iDisplayLength: 5}).on("length.dt", function (t, n, r) {
+        body.children(".fixedHeader").each(function () {
+            $(this).remove()
         });
-});
+        o.draw();
+        u = new $.fn.dataTable.FixedHeader(o)
+    });
+    var u = new $.fn.dataTable.FixedHeader(o);
+    $("#saveChanges").on("click", function () {
+        var e = [];
+        var t = n ? $(".scheduleTable") : $(".editableTable");
+        var r = t.attr("class").split(" ")[1].substr(7);
+        var s = false;
+        t.find("tbody .unsaved").each(function () {
+            var t = $(this);
+            var n = {};
+            n["id"] = o.row(t).data()[0];
+            t.children("td").each(function () {
+                var e = $(this);
+                if (e.hasClass("required")) {
+                    var t = "";
+                    if (e.hasClass("editTextfield")) {
+                        t = e.children("textarea").val()
+                    } else {
+                        t = e.text()
+                    }
+                    if (empty(t)) {
+                        e.addClass("redBorder");
+                        s = true
+                    }
+                }
+                e.removeClass("redBorder");
+                if (!e.hasClass("delete")) {
+                    var i = e.attr("class").split(" ")[0].substr(r.length);
+                    if (e.hasClass("editImage")) {
+                        var o = e.find(".fileImage");
+                        if (o.hasClass("changed")) {
+                            var u = o.children("img");
+                            if (u.length > 0) {
+                                var a = u.attr("src").split("/");
+                                n[i] = a[a.length - 1]
+                            } else {
+                                n[i] = null
+                            }
+                        }
+                    } else if (e.hasClass("editFile")) {
+                        var f = e.children(".fileName");
+                        if (f.hasClass("changed")) {
+                            var l = $.trim(f.html());
+                            n[i] = l != "-" ? l : null
+                        }
+                    } else if (e.hasClass("editSelect")) {
+                        var c = e.children("span");
+                        if (c.length > 0)n[i] = c.attr("class").substr(7)
+                    } else if (e.hasClass("editMultiSelect")) {
+                        var h = [];
+                        e.children("span").each(function () {
+                            h.push($(this).attr("class").substr(7))
+                        });
+                        n[i] = h.length > 0 ? h : null
+                    } else if (e.hasClass("editTextfield")) {
+                        n[i] = e.children("textarea").val()
+                    } else if (e.hasClass("editList")) {
+                        var p = [
+                            {}
+                        ];
+                        e.find("ul li").each(function () {
+                            var e = $(this);
+                            var t = {};
+                            e.children("span").each(function () {
+                                t[$(this).attr("class").split(" ")[0]] = $(this).text()
+                            });
+                            p.push(t)
+                        });
+                        n[i] = p
+                    } else {
+                        n[i] = $.trim(e.text()) == "-" ? null : e.text()
+                    }
+                }
+            });
+            e.push(n);
+            if (s)return false
+        });
+        if (s) {
+            addMessage(i.gettext("Some required fields are empty."));
+            return false
+        }
+        if (e.length > 0) {
+            $("tr.unsaved").removeClass("unsaved");
+            $.ajax({url: baseUrl + "/admin/" + t.attr("id") + "/save", type: "POST", data: {entities: e}}).success(function (e) {
+                console.log(e);
+                if (e.success == 1) {
+                    location.reload(true)
+                }
+                addMessage(e.message)
+            }).error(function (e, t, n) {
+                console.log(e);
+                console.log(t);
+                console.log(n);
+                addMessage(i.gettext("Something with wrong, please try again."))
+            })
+        } else {
+            addMessage(i.gettext("There are no changes to save."))
+        }
+    });
+    $(document).on("click", "td.delete", function () {
+        if (confirm(i.gettext("Are you sure about this action?"))) {
+            var e = $(this);
+            var t = s.attr("id");
+            var n = o.row(e.parent()).data()[0];
+            $.ajax({url: baseUrl + "/admin/" + t + "/remove", type: "POST", data: {id: n}}).success(function (t) {
+                if (t.success == 1) {
+                    o.row(e.parent()).remove().draw();
+                    location.reload(true)
+                }
+                addMessage(t.message)
+            }).error(function () {
+                addMessage(i.gettext("Something with wrong, please try again."))
+            })
+        }
+    });
+    $(document).on("click", ".textEditorToggle", function (t) {
+        var n = $(this);
+        var i = n.siblings("textarea");
+        i.addClass("activeTextfield");
+        var s = $("<div/>", {id: "stageWrapper"}).prependTo($("body"));
+        var o = $("<div/>", {id: "stage"}).appendTo(s);
+        var u = $("<div/>", {id: "textareaWrapper"}).appendTo(o);
+        var a = $("<textarea/>", {id: "stageTextarea", html: i.val()}).appendTo(u);
+        var f = $("<span />", {"class": "done", html: "Done"}).appendTo(u);
+        a.sceditor({plugins: "xhtml", style: "../css/scedit/jquery.sceditor.default.min.css", emoticonsRoot: "../images/", disallowedTags: ["script", "div"]});
+        r = s;
+        s.focusLight();
+        body.addClass("unscrollable")
+    });
+    $(document).on("click", "#stage .done", function () {
+        var t = $(".activeTextfield");
+        var n = $("#stageTextarea").sceditor("instance").val();
+        if (t.val() != n) {
+            t.closest("tr").addClass("unsaved");
+            t.html(n)
+        }
+        t.removeClass("activeTextfield");
+        r.unfocusLight().detach();
+        body.removeClass("unscrollable")
+    });
+    $(document).on("click", ".editAttributes", function () {
+        var t = $(this);
+        var n = t.siblings(".attributeGuide");
+        var i = $("<div/>", {id: "stageWrapper", "class": "wider"}).prependTo(body);
+        var s = $("<div />", {id: "stage"}).appendTo(i);
+        var o = "";
+        n.children("span").each(function () {
+            var e = $(this);
+            o += e.hasClass("invisible") ? '<th class="invisible"' : "<th";
+            o += ">" + e.text() + "</th>"
+        });
+        var u = $('<div id="attributeList" class="editListContent">' + "<table>" + "<thead>" + "<tr>" + o + "</tr>" + "</thead>" + "<tbody></tbody>" + "</table>" + "</div>").appendTo(s);
+        var a = $('<div id="editListOptions">' + '<span class="addAttribute button">Add Attribute</span>' + '<span class="removeAttribute button">Remove Attribute</span>' + '<span class="attributeEditDone button">Done</span> ' + "</div>").appendTo(s);
+        var f = $(".editListContent tbody");
+        t.siblings("ul").children("li").each(function () {
+            var e = $(this);
+            var t = $("<tr />");
+            e.children("span").each(function () {
+                var e = $(this);
+                var n = $("<td />", {"class": e.hasClass("invisible") ? "invisible" : ""});
+                $("<input />", {value: e.html(), "class": e.attr("class").split(" ")[0]}).appendTo(n);
+                n.appendTo(t)
+            });
+            t.appendTo(f)
+        });
+        t.addClass("activeEditedField");
+        r = i;
+        i.focusLight();
+        body.addClass("unscrollable")
+    });
+    $(document).on("click", ".addAttribute", function () {
+        var e = $(".activeEditedField");
+        var t = e.siblings(".attributeGuide");
+        var n = $("#attributeList tbody");
+        var r = parseInt(n.find("tr:last-of-type .position").val());
+        r = empty(r) || isNaN(r) ? 1 : r + 1;
+        var i = $("<tr />");
+        t.children("span").each(function () {
+            var e = $(this);
+            var t = $("<td />", {"class": e.hasClass("invisible") ? "invisible" : ""});
+            $("<input />", {"class": e.attr("class").split(" ")[0], value: e.hasClass("position") ? r : ""}).appendTo(t);
+            t.appendTo(i)
+        });
+        i.appendTo(n)
+    });
+    $(document).on("click", ".attributeEditDone", function () {
+        var t = $(".activeEditedField");
+        var n = t.siblings("ul");
+        n.empty();
+        $("#stage .editListContent").find("tbody").children("tr").each(function () {
+            var e = $(this);
+            var t = $("<li />");
+            e.children("td").each(function () {
+                var e = $(this);
+                var r = e.children("input");
+                if (!e.hasClass("invisible") && empty(r.val())) {
+                    r.addClass("redBorder");
+                    i = true
+                } else {
+                    r.removeClass("redBorder")
+                }
+                if (!i) {
+                    i = false;
+                    var s = e.hasClass("invisible") ? r.attr("class") + " invisible" : r.attr("class");
+                    $("<span />", {"class": s, html: r.val()}).appendTo(t);
+                    t.appendTo(n)
+                }
+            })
+        });
+        if (!i) {
+            var i = false;
+            if (t.closest(".editableTable").length > 0 && n.children("li").length > 0) {
+                t.closest("tr").addClass("unsaved")
+            }
+            r.unfocusLight().detach();
+            t.removeClass("activeEditedField");
+            body.removeClass("unscrollable")
+        }
+    });
+    $(document).on("click", ".editListContent tbody tr", function () {
+        $(this).parent().find("tr.active").removeClass("active");
+        $(this).toggleClass("active")
+    });
+    $(document).on("click", ".removeAttribute", function () {
+        $(".activeEditedField").closest("tr").addClass("unsaved");
+        $(".editListContent").find("tr.active").detach()
+    })
+})

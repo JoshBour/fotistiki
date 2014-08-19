@@ -29,6 +29,21 @@ class Module
 //            ->setFallbackLocale('el_GR');
     }
 
+    public function bootstrapSession($e)
+    {
+        $session = $e->getApplication()
+            ->getServiceManager()
+            ->get('Zend\Session\SessionManager');
+        $session->start();
+
+        $container = new Container('initialized');
+        if (!isset($container->init)) {
+            $session->regenerateId(true);
+            $container->init = 1;
+        }
+    }
+
+
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';

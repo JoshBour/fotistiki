@@ -1,7 +1,7 @@
 <footer>&copy <?php echo date('Y'); ?>, INFO LIGHTING CO. All rights reserved</footer>
 <?php
-echo $this->inlineScript()->prependFile($this->basePath('js/main.min.js'), 'text/javascript')
-    ->prependFile($this->basePath('js/lib.min.js'), 'text/javascript')
+echo $this->inlineScript()->prependFile(APPLICATION_ENV == "development" ? $this->basePath('js/main.js') : $this->basePath('js/main.min.js'), 'text/javascript')
+    ->prependFile(APPLICATION_ENV == "development" ? $this->basePath('js/lib.js') : $this->basePath('js/lib.min.js'), 'text/javascript')
     ->prependFile($this->basePath('js/Gettext.js'), 'text/javascript')
     ->prependFile($this->basePath('js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9')))
     ->prependFile($this->basePath('js/html5shiv.js', 'text/javascript', array('conditional' => 'lt IE 9')))

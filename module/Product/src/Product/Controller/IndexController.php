@@ -39,8 +39,7 @@ class IndexController extends BaseController
         $categories = $this->getCategoryRepository()->findBy(array("parentCategory" => null), array("position" => "ASC"));
         return new ViewModel(array(
             "categories" => $categories,
-            "useBlackLayout" => true,
-            "pageTitle" => "Info - Products"
+            "pageTitle" => "Products"
         ));
     }
 
@@ -56,7 +55,7 @@ class IndexController extends BaseController
                 "product" => $product,
                 "activeRoute" => "products_index",
                 "bodyClass" => "productPage",
-                "pageTitle" => "Info - " . $product->getName(),
+                "pageTitle" => $product->getName(),
                 "tab" => $this->params()->fromRoute("tab")
             ));
         }

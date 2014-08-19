@@ -35,11 +35,10 @@ class IndexController extends BaseController
     public function homeAction()
     {
         $slides = $this->getSlideRepository()->findBy(array(), array("position" => "ASC"));
-        $posts = $this->getPostRepository()->findBy(array(), array("postDate" => "DESC"), 3);
+        $posts = $this->getPostRepository()->findBy(array(), array("postDate" => "DESC"), 4);
         return new ViewModel(array(
             "slides" => $slides,
             "posts" => $posts,
-            "useBlackLayout" => true,
             "bodyClass" => "homePage"
         ));
     }
@@ -94,9 +93,8 @@ class IndexController extends BaseController
         return new ViewModel(array(
             "form" => $form,
             "content" => $contentRepository->findOneBy(array("target" => "contact")),
-            "useBlackLayout" => true,
             "bodyClass" => "contactPage",
-            "pageTitle" => "Info - Contact Us"
+            "pageTitle" => "Contact Us"
         ));
     }
 

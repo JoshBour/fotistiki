@@ -2,7 +2,7 @@
     <?php
     $child = $this->child;
     $isMobile = $this->mobile();
-    $pageTitle = (isset($child->pageTitle)) ? $child->pageTitle : "Info";
+    $pageTitle = (isset($child->pageTitle)) ? "Fotistiki - ".$child->pageTitle : "Fotistiki";
     $follow = (isset($child->follow)) ? "noindex, nofollow" : "feed, follow, archieve";
 
     // The website's title.
@@ -21,28 +21,22 @@
         ->appendName('keywords', $keywords)
         ->appendName('robots', $follow)
         ->appendName('language', 'en')
-        ->appendName('googlebot', $follow);
+        ->appendName('googlebot', $follow)
+        ->appendName('google-translate-customization',"4d2a83c3b2b11c07-ea5ca483135320bc-g77f3fb39698f44a7-10");
+
     echo $this->headMeta();
 
     // We add the favicon and our stylesheets
     $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath('images/favicon.ico')))
          ->headLink(array('rel' => 'gettext', 'type' => 'application/x-po', 'href' => $this->basePath('module/Application/language/'.$this->plugin('translate')->getTranslator()->getLocale().'.po')))
-        ->prependStylesheet($this->basePath('css/jquery.dataTables.min.css'))
-        ->prependStylesheet($this->basePath('css/jquery.datetimepicker.min.css'))
-        ->prependStylesheet($this->basePath('css/print.css'),'print')
-        ->prependStylesheet($this->basePath('css/style.min.css'));
-//
-//    if ($isMobile) {
-//        $this->headLink()->appendStylesheet($this->basePath('css/mobile.css'));
-//    }
+        ->prependStylesheet(APPLICATION_ENV == "development" ? $this->basePath('css/print.css') : $this->basePath('css/print.min.css'),'print')
+        ->prependStylesheet(APPLICATION_ENV == "development" ? $this->basePath('css/style.css') : $this->basePath('css/style.min.css'));
+
     if($child->useBlackLayout)
-        $this->headLink()->appendStylesheet($this->basePath('css/style-black.min.css'));
+        $this->headLink()->appendStylesheet(APPLICATION_ENV == "development" ? $this->basePath('css/style-black.css') : $this->basePath('css/style-black.min.css'));
     echo $this->headLink();
 
-    // Some scripts the must be outputted first follow below
+    // Some scripts the must be outputted first  below
     ?>
-    <script>
-        var baseUrl = '<?php echo $this->basePath(); ?>';
-        var isMobile = <?php echo $isMobile ? 'true':'false'; ?>;
-    </script>
+    <script>var baseUrl = '<?php echo $this->basePath(); ?>',isMobile = <?php echo $isMobile ? 'true':'false'; ?>;</script>
 </head>

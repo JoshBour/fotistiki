@@ -31,42 +31,45 @@ if (!empty($messages)) :
     $route = $this->routeName();
     if (!$child->hideHeader):?>
         <header>
-            <div id="topWrapper">
-                <div id="logo">
-                    <a href="<?php echo $this->url('home'); ?>"
-                       title="<?php echo $this->translate("Info Lighting"); ?>">Info Lighting</a>
+            <div id="logo">
+                <a href="<?php echo $this->url('home'); ?>"
+                   title="<?php echo $this->translate("Info Lighting"); ?>"><img
+                        src="<?php echo $this->basePath("images/logo.png"); ?>"/ ></a>
+            </div>
+            <div id="navWrapper">
+                <div id="topWrapper">
+                    <nav>
+                        <ul>
+                            <li>
+                                <a href="<?php echo $this->url('products'); ?>"<?php echo $route == "products" ? ' class="active"' : ''; ?>><?php echo $this->translate("Products"); ?></a>
+                            </li>
+                            <li>
+                                <a href="<?php echo $this->url('posts'); ?>"<?php echo $route == "posts" ? ' class="active"' : ''; ?>><?php echo $this->translate("Posts"); ?></a>
+                            </li>
+                            <li>
+                                <a href="<?php echo $this->url('categories'); ?>"<?php echo $route == "categories" ? ' class="active"' : ''; ?>><?php echo $this->translate("Categories"); ?></a>
+                            </li>
+                            <li>
+                                <a href="<?php echo $this->url('partners'); ?>"<?php echo $route == "partners" ? ' class="active"' : ''; ?>><?php echo $this->translate("Partners"); ?></a>
+                            </li>
+                            <li>
+                                <a href="<?php echo $this->url('about'); ?>"<?php echo $route == "about" ? ' class="active"' : ''; ?>><?php echo $this->translate("About"); ?></a>
+                            </li>
+                            <li>
+                                <a href="<?php echo $this->url('contents'); ?>"<?php echo $route == "contents" ? ' class="active"' : ''; ?>><?php echo $this->translate("Contents"); ?></a>
+                            </li>
+                            <li>
+                                <a href="<?php echo $this->url('slides'); ?>"<?php echo $route == "slides" ? ' class="active"' : ''; ?>><?php echo $this->translate("Slides"); ?></a>
+                            </li>
+                            <li>
+                                <a href="<?php echo $this->url('users'); ?>"<?php echo $route == "users" ? ' class="active"' : ''; ?>><?php echo $this->translate("Users"); ?></a>
+                            </li>
+                            <li><a
+                                    href="<?php echo $this->url('logout'); ?>"><?php echo $this->translate("Logout"); ?></a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
-                <nav>
-                    <ul>
-                        <li>
-                            <a href="<?php echo $this->url('products'); ?>"<?php echo $route == "products" ? ' class="active"' : ''; ?>><?php echo $this->translate("Products"); ?></a>
-                        </li>
-                        <li>
-                            <a href="<?php echo $this->url('posts'); ?>"<?php echo $route == "posts" ? ' class="active"' : ''; ?>><?php echo $this->translate("Posts"); ?></a>
-                        </li>
-                        <li>
-                            <a href="<?php echo $this->url('categories'); ?>"<?php echo $route == "categories" ? ' class="active"' : ''; ?>><?php echo $this->translate("Categories"); ?></a>
-                        </li>
-                        <li>
-                            <a href="<?php echo $this->url('partners'); ?>"<?php echo $route == "partners" ? ' class="active"' : ''; ?>><?php echo $this->translate("Partners"); ?></a>
-                        </li>
-                        <li>
-                            <a href="<?php echo $this->url('about'); ?>"<?php echo $route == "about" ? ' class="active"' : ''; ?>><?php echo $this->translate("About"); ?></a>
-                        </li>
-                        <li>
-                            <a href="<?php echo $this->url('contents'); ?>"<?php echo $route == "contents" ? ' class="active"' : ''; ?>><?php echo $this->translate("Contents"); ?></a>
-                        </li>
-                        <li>
-                            <a href="<?php echo $this->url('slides'); ?>"<?php echo $route == "slides" ? ' class="active"' : ''; ?>><?php echo $this->translate("Slides"); ?></a>
-                        </li>
-                        <li>
-                            <a href="<?php echo $this->url('users'); ?>"<?php echo $route == "users" ? ' class="active"' : ''; ?>><?php echo $this->translate("Users"); ?></a>
-                        </li>
-                        <li class="rFloat"><a
-                                href="<?php echo $this->url('logout'); ?>"><?php echo $this->translate("Logout"); ?></a>
-                        </li>
-                    </ul>
-                </nav>
             </div>
         </header>
     <?php

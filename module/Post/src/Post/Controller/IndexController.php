@@ -54,8 +54,7 @@ class IndexController extends BaseController
         $posts->setCurrentPageNumber($page)
             ->setItemCountPerPage(6);
         return new ViewModel(array(
-            "useBlackLayout" => true,
-            "pageTitle" => "Info - Latest News",
+            "pageTitle" => "Latest News",
             "bodyClass" => "postsPage",
             "posts" => $posts,
         ));
@@ -68,10 +67,9 @@ class IndexController extends BaseController
             $post = $this->getPostRepository()->findOneBy(array("url" => $postUrl));
             if ($post) {
                 return new ViewModel(array(
-                    "useBlackLayout" => true,
                     "post" => $post,
                     "activeRoute" => "posts_index",
-                    "pageTitle" => "Info - " . $post->getTitle()
+                    "pageTitle" => $post->getTitle()
                 ));
             }
         }

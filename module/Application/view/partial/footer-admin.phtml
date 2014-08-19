@@ -1,6 +1,6 @@
 <?php
-echo $this->inlineScript()->prependFile($this->basePath('js/admin-main.min.js'), 'text/javascript')
-    ->prependFile($this->basePath('js/lib.min.js'), 'text/javascript')
+echo $this->inlineScript()->prependFile(APPLICATION_ENV == "development" ? $this->basePath('js/admin-main.js') : $this->basePath('js/admin-main.min.js'), 'text/javascript')
+    ->prependFile(APPLICATION_ENV == "development" ? $this->basePath('js/lib.js') : $this->basePath('js/lib.min.js'), 'text/javascript')
     ->prependFile($this->basePath('js/Gettext.js'), 'text/javascript')
     ->prependFile($this->basePath('js/jquery.form.min.js', 'text/javascript'))
     ->prependFile($this->basePath('js/dataTables.fixedHeader.min.js', 'text/javascript'))

@@ -49,8 +49,7 @@ class AboutController extends BaseController
             "aboutCategory" => $aboutCategory,
             "activeCategory" => $category,
             "bodyClass" => "aboutPage",
-            "useBlackLayout" => true,
-            "pageTitle" => "Info - About Us"
+            "pageTitle" => "About Us"
         ));
     }
 

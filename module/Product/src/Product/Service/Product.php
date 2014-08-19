@@ -146,6 +146,8 @@ class Product extends BaseService
             $variationList = array();
             $relatedList = array();
             $em->persist($product);
+
+            $em->flush();
             foreach ($extraData['attributes'] as $attributes) {
                 $attribute = $attributeRepository->findOneBy(array("name" => $attributes["name"]));
                 if (empty($attribute)) {
@@ -159,7 +161,7 @@ class Product extends BaseService
                 foreach ($extraData['productVariations'] as $variation) {
                     $variationProd = $productRepository->findOneBy(array("productNumber" => $variation["productNumber"]));
                     if ($variationProd) {
-                        $join = new ProductVariation($product, $variation, $variation["position"]);
+                        $join = new ProductVariation($product, $variationProd, $variation["position"]);
                     } else {
                         return false;
                     }
@@ -177,7 +179,6 @@ class Product extends BaseService
                     $relatedList[] = $join;
                 }
             }
-            $em->flush();
             foreach ($relatedList as $join) {
                 $em->persist($join);
             }
@@ -187,6 +188,7 @@ class Product extends BaseService
             foreach ($attributeList as $attribute) {
                 $em->persist($attribute);
             }
+            $em->flush();
             $product->setAttributes($attributeList);
             if (isset($extraData['relatedProducts'])) $product->setRelatedProducts($relatedList);
             if (isset($extraData['productVariations'])) $product->setProductVariations($variationList);
