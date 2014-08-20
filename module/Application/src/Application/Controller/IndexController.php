@@ -20,6 +20,8 @@ use Zend\View\Model\ViewModel;
  */
 class IndexController extends BaseController
 {
+    const LAYOUT_ADMIN = "layout/admin";
+
     private $contactForm;
 
     private $contentRepository;
@@ -194,6 +196,14 @@ class IndexController extends BaseController
             return new JsonModel(array("success" => $success, "name" => $name));
         }
         return $this->notFoundAction();
+    }
+
+    public function helpAction(){
+        $this->layout()->setTemplate(self::LAYOUT_ADMIN);
+        return array(
+            "showHeader" => false,
+            "bodyClass" => "helpPage",
+        );
     }
 
     /**

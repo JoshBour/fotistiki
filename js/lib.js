@@ -1,3 +1,28 @@
+/* ===================================================== */
+/*                       Tab Related                     */
+var tabs = $('.tabs li');
+
+tabs.each(function(){
+    var span = $(this);
+    var id = span.attr('class').split(' ')[0].substr(4);
+    if(span.hasClass('activeTab')){
+        $('#'+id).show();
+    }else{
+        $('#'+id).hide();
+    }
+});
+
+tabs.on('click',function(){
+    var elem = $(this);
+    if(!elem.hasClass('activeTab')){
+        var activeTab = elem.siblings('.activeTab').removeClass('activeTab');
+        $('#'+activeTab.attr('class').split(' ')[0].substr(4)).fadeOut("normal",function(){
+            $('#'+elem.attr('class').split(' ')[0].substr(4)).fadeIn();
+        });
+        elem.addClass('activeTab');
+    }
+});
+
 // adds a new message to the flash messenger
 function addMessage(message) {
     var flash = $('#flash');

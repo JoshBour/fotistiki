@@ -27,6 +27,7 @@ class Module
         $translator -> setLocale($locale) -> setFallbackLocale('en_US');
 //        $translator->setLocale(\Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']));
 //            ->setFallbackLocale('el_GR');
+        $this->bootstrapSession($e);
     }
 
     public function bootstrapSession($e)

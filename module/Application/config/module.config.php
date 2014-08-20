@@ -148,6 +148,16 @@ return array(
                     )
                 )
             ),
+            'help' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/help[/:index]',
+                    'defaults' => array(
+                        'controller' => __NAMESPACE__ . '\Controller\Index',
+                        'action' => 'help',
+                    ),
+                ),
+            ),
             'contents' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -249,6 +259,7 @@ return array(
             'about_category_form' => __NAMESPACE__ . '\Factory\AboutCategoryFormFactory',
             'slide_form' => __NAMESPACE__ . '\Factory\SlideFormFactory',
             'contact_form' => __NAMESPACE__ . '\Factory\ContactFormFactory',
+            'Zend\Session\SessionManager' => __NAMESPACE__ . '\Factory\SessionManagerFactory'
         ),
         'invokables' => array(
             'partner_service' => __NAMESPACE__ . '\Service\Partner',

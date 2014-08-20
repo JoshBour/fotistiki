@@ -1,0 +1,186 @@
+<div id="sidebar">
+    <ul class="tabs">
+        <li class="tab-index button activeTab">Αρχική</li>
+        <li class="tab-addProduct button">Προσθήκη Προϊόντος</li>
+        <li class="tab-addPost button">Προσθήκη Ανάρτησης (Νέο)</li>
+        <li class="tab-addCategory button">Προσθήκη Κατηγορίας</li>
+        <li class="tab-addPartner button">Προσθήκη Συνεργάτη</li>
+        <li class="tab-addAbout button">Προσθήκη κατηγορίας για την σελίδα "About"</li>
+        <li class="tab-addSlide button">Προσθήκη slide για την αρχική σελίδα</li>
+        <li class="tab-addUser button">Προσθήκη διαχειριστή για το admin panel</li>
+    </ul>
+</div>
+<div id="main">
+    <div id="index">Καλως ήρθατε στην σελίδα για βοήθεια, η οποία περιέχει πληροφορίες σχετικά με την διαχείρηση της
+        σελίδας.<br/>
+        Επιλέξτε μία κατηγορία από την λίστα που βρίσκεται αριστερά για να σας δωθούν οι ανάλογες πληροφορίες.
+    </div>
+    <div id="addProduct">
+        <h2>Για να προσθέσουμε ένα νέο προϊόν</h2>
+        <ol>
+            <li>Πηγαίουμε στην σελίδα των προϊόντων <a href="<?php echo $this->url("products"); ?>" target="_blank">πατώντας
+                    εδώ</a></li>
+            <li>Πατώντας πάνω στο κουμπί <strong>Add Product</strong> εμφανίζεται η φόρμα για την προσθήκη προϊόντος.
+                <img src="<?php echo $this->basePath('images/help/products.jpg'); ?>"/></li>
+            <li>Συμπληρώνουμε τα πεδία ώς εξής:<br/>
+                <ul>
+                    <li><strong>Product Number:</strong> Ο κωδικός του προϊόντος. <br/>
+
+                        <p>Αν πρόκειται για βασικό προϊόν (δηλαδή <strong>δεν είναι υποπροϊόν σε κάποιο άλλο</strong>),
+                            σε αυτό το
+                            πεδίο συμπληρώνουμε το βασικό του όνομα.<br/>
+                            Δηλαδή άν το προϊόν είναι το SUBRA 195, στο πεδίο θα συμπληρώσουμε subra195 ή subra (δική
+                            σας επιλογή)
+                            Διαφορετικά συμπληρώνουμε τον κωδικό του προϊόντος, πχ 13959.</p>
+                    </li>
+                    <li><strong>Name:</strong> Το όνομα του προϊόντος.</li>
+                    <li><strong>Description:</strong> Η περιγραφή του προϊόντος.
+                    <p>Πατώντας στο κουμπί edit κάτω από το "Description" μας εμφανίζεται ο επεξεργαστής κειμένου
+                            στον οποίον συμπληρώνουμε την περιγραφή και πατάμε done όταν τελειώσουμε.</p>
+                        <img src="<?php echo $this->basePath('images/help/editor.jpg'); ?>"/></li>
+                    <li><strong>Attributes:</strong> Οι ιδιότητες που θα εμφανίστούν στον πίνακα στην σελίδα του
+                        προϊόντος.<br />
+                        Έστω ότι θέλουμε να φτιάξουμε τον παρακάτω πίνακα:
+                        <img src="<?php echo $this->basePath('images/help/product-attributes.jpg'); ?>"/>
+                        Πατώντας στο κουμπί <strong>edit κάτω από το Attributes</strong> εμφανίζεται ο παρακάτω πίνακας:
+                        <img src="<?php echo $this->basePath('images/help/product-add-attribute.jpg'); ?>"/>
+                        Προσθέτουμε τις ιδιότητες πατώντας το κουμπί <strong>Αdd Attribute</strong> και τις διαμορφώνουμε ώς εξής
+                        <img src="<?php echo $this->basePath('images/help/product-final-attributes.jpg'); ?>"/>
+                        Στο τέλος πατάμε το κουμπί <strong>Done</strong>.<br/>
+                        <strong>Σημείωση:</strong> Δεν χρειάζεται να προσθέσουμε το πεδίο <strong>"Product Number"</strong> καθώς προστίθεται <strong>μόνο του</strong>.
+                    </li>
+                    <li><strong>Datasheet (Προαιρετικό):</strong> Ένα αρχείο σχετικά με το προϊόν. Μπορεί να είναι της μορφής txt, pdf, doc, xls κ.α.</li>
+                    <li><strong>Thumbnail (Προαιρετικό):</strong> Η εικόνα του προϊόντος. <strong>Προτεινόμενες διαστάσεις: 268 πλάτος (width) και 148 ύψος (height) </strong></li>
+                    <li><strong>Specifications (Προαιρετικό):</strong> Η εικόνα με τα specifications του προϊόντος. <strong>Προτεινόμενες διαστάσεις: 265 πλάτος (width) και 450 ύψος (height) </strong></li>
+                    <li><strong>Related Products (Προαιρετικό):</strong> Tα σχετικά προϊόντα. Θα πρέπει να έχουν ήδη δημιουργηθεί για να προστεθούν.
+                    <p>
+                        Πατώντας στο κουμπί <strong>edit κάτω από το Related Products</strong> εμφανίζεται ο παρακάτω πίνακας:
+                        <img src="<?php echo $this->basePath('images/help/product-related.jpg'); ?>"/>
+                        Προσθέτουμε τα σχετικά προϊόντα πατώντας το κουμπί <strong>Αdd Attribute</strong><br />
+                        και συμπληρώνουμε το product number του προϊόντος που θέλουμε και την θέση στην οποία θέλουμε να εμφανίζεται.
+                        <img src="<?php echo $this->basePath('images/help/product-add-related.jpg'); ?>"/>
+                        Στο τέλος πατάμε το κουμπί <strong>Done</strong>.<br/>
+                    </p>
+                    </li>
+                    <li><strong>Product Variations (Προαιρετικό):</strong> Οι παραλλαγές του προϊόντος. Θα πρέπει να έχουν ήδη δημιουργηθεί για να προστεθούν.<br /> Η διαδικασία προσθήκης είναι ίδια με αυτή των Related Products (από πάνω)</li>
+                    <li><strong>Category (Προαιρετικό):</strong> Η κατηγορία του προϊόντος. Θα πρέπει να έχει ήδη δημιουργηθεί από την σελίδα διαχείρησης των κατηγοριών.</li>
+                </ul>
+            </li>
+            <li>Πατάμε το κουμπί Add και είμαστε έτοιμοι, το προϊόν έχει προστεθεί. (αν δεν υπήρξε κάποιο σφάλμα)</li>
+        </ol>
+    </div>
+    <div id="addPost">
+        <h2>Για να προσθέσουμε μια νέα ανάρτηση</h2>
+        <ol>
+            <li>Πηγαίουμε στην σελίδα των αναρτήσεων <a href="<?php echo $this->url("posts"); ?>" target="_blank">πατώντας
+                    εδώ</a></li>
+            <li>Πατώντας πάνω στο κουμπί <strong>Add Post</strong> εμφανίζεται η φόρμα για την προσθήκη ανάρτησης.
+                <img src="<?php echo $this->basePath('images/help/posts.jpg'); ?>"/></li>
+            <li>Συμπληρώνουμε τα πεδία ώς εξής:<br/>
+                <ul>
+                    <li><strong>Title:</strong> Ο τίτλος της ανάρτησης.</li>
+                    <li><strong>Content:</strong> Το περιεχόμενο της ανάρτησης.
+                        <p>Πατώντας στο κουμπί <strong>edit κάτω από το Content</strong> μας εμφανίζεται ο επεξεργαστής κειμένου
+                            στον οποίον συμπληρώνουμε το κείμενο μας και πατάμε <strong>done</strong> όταν τελειώσουμε.</p>
+                        <img src="<?php echo $this->basePath('images/help/editor.jpg'); ?>"/></li>
+                    <li><strong>Thumbnail:</strong> Η εικόνα της ανάρτησης. <strong>Προτεινόμενες διαστάσεις: 295 πλάτος (width) και 195 ύψος (height) </strong></li>
+                </ul>
+            </li>
+            <li>Πατάμε το κουμπί Add και είμαστε έτοιμοι, η ανάρτηση έχει προστεθεί. (αν δεν υπήρξε κάποιο σφάλμα)</li>
+    </div>
+    <div id="addCategory">
+        <h2>Για να προσθέσουμε μια νέα κατηγορία</h2>
+        <ol>
+            <li>Πηγαίουμε στην σελίδα των κατηγοριών <a href="<?php echo $this->url("categories"); ?>" target="_blank">πατώντας
+                    εδώ</a></li>
+            <li>Πατώντας πάνω στο κουμπί <strong>Add Category</strong> εμφανίζεται η φόρμα για την προσθήκη κατηγορίας.
+                <img src="<?php echo $this->basePath('images/help/categories.jpg'); ?>"/></li>
+            <li>Συμπληρώνουμε τα πεδία ώς εξής:<br/>
+                <ul>
+                    <li><strong>Name:</strong> Το όνομα της κατηγορίας.</li>
+                    <li><strong>Description (Προαιρετικό):</strong> Η περιγραφή της κατηγορίας.
+                        <p>Πατώντας στο κουμπί <strong>edit κάτω από το Description</strong> μας εμφανίζεται ο επεξεργαστής κειμένου
+                            στον οποίον συμπληρώνουμε το κείμενο μας και πατάμε <strong>done</strong> όταν τελειώσουμε.</p>
+                        <img src="<?php echo $this->basePath('images/help/editor.jpg'); ?>"/></li>
+                    <li><strong>Parent Category (Προαιρετικό):</strong> Η κατηγορία "πατέρας" για την κατηγορία που θέλουμε να προσθέσουμε. Πρέπει να υπάρχει ήδη για να μας εμφανιστεί στην λίστα.</li>
+                    <li><strong>Thumbnail:</strong> Η εικόνα της κατηγορίας. <strong>Προτεινόμενες διαστάσεις: 200 πλάτος (width) και 200 ύψος (height) </strong></li>
+                    <li><strong>Position (Προαιρετικό):</strong> Η θέση της κατηγορίας στην λίστα με της κατηγορίες.</li>
+                </ul>
+            </li>
+            <li>Πατάμε το κουμπί Add και είμαστε έτοιμοι, η κατηγορία έχει προστεθεί. (αν δεν υπήρξε κάποιο σφάλμα)</li>
+    </div>
+    <div id="addPartner">
+        <h2>Για να προσθέσουμε νέα συνεργάτη</h2>
+        <ol>
+            <li>Πηγαίουμε στην σελίδα των συνεργατών <a href="<?php echo $this->url("partners"); ?>" target="_blank">πατώντας
+                    εδώ</a></li>
+            <li>Πατώντας πάνω στο κουμπί <strong>Add Partner</strong> εμφανίζεται η φόρμα για την προσθήκη συνεργάτη.
+                <img src="<?php echo $this->basePath('images/help/partners.jpg'); ?>"/></li>
+            <li>Συμπληρώνουμε τα πεδία ώς εξής:<br/>
+                <ul>
+                    <li><strong>Name (Προαιρετικό):</strong> Το όνομα του συνεργάτη.</li>
+                    <li><strong>Website (Προαιρετικό):</strong> Η διεύθυνση για την ιστοσελίδα του συνεργάτη.</li>
+                    <li><strong>Description (Προαιρετικό):</strong> Λίγα λόγια για την συνεργασία.
+                        <p>Πατώντας στο κουμπί <strong>edit κάτω από το Description</strong> μας εμφανίζεται ο επεξεργαστής κειμένου
+                            στον οποίον συμπληρώνουμε το κείμενο μας και πατάμε <strong>done</strong> όταν τελειώσουμε.</p>
+                        <img src="<?php echo $this->basePath('images/help/editor.jpg'); ?>"/></li>
+                    <li><strong>Thumbnail:</strong> Το λογότυπο του συνεργάτη. <strong>Προτεινόμενες διαστάσεις: 340 πλάτος (width) και 70 ύψος (height) </strong></li>
+                </ul>
+            </li>
+            <li>Πατάμε το κουμπί Add και είμαστε έτοιμοι, ο συνεργάτης έχει προστεθεί. (αν δεν υπήρξε κάποιο σφάλμα)</li>
+    </div>
+    <div id="addAbout">
+        <h2>Για να προσθέσουμε νέα κατηγορία στην σελίδα <strong>About</strong></h2>
+        <ol>
+            <li>Πηγαίουμε στην σελίδα για την προσθήκη <a href="<?php echo $this->url("about"); ?>" target="_blank">πατώντας
+                    εδώ</a></li>
+            <li>Πατώντας πάνω στο κουμπί <strong>Add About Category</strong> εμφανίζεται η φόρμα για την προσθήκη κατηγορίας για την σελίδα about.
+                <img src="<?php echo $this->basePath('images/help/about.jpg'); ?>"/></li>
+            <li>Συμπληρώνουμε τα πεδία ώς εξής:<br/>
+                <ul>
+                    <li><strong>Title:</strong> Ο τίτλος της κατηγορίας.</li>
+                    <li><strong>Content:</strong> Το κείμενο για την κατηγορία.
+                        <p>Πατώντας στο κουμπί <strong>edit κάτω από το Content</strong> μας εμφανίζεται ο επεξεργαστής κειμένου
+                            στον οποίον συμπληρώνουμε το κείμενο μας και πατάμε <strong>done</strong> όταν τελειώσουμε.</p>
+                        <img src="<?php echo $this->basePath('images/help/editor.jpg'); ?>"/></li>
+                </ul>
+            </li>
+            <li>Πατάμε το κουμπί Add και είμαστε έτοιμοι, ο κατηγορία έχει προστεθεί στο about page. (αν δεν υπήρξε κάποιο σφάλμα)</li>
+    </div>
+    <div id="addSlide">
+        <h2>Για να προσθέσουμε μια ανάρτηση σαν slide στην αρχική σελίδα</h2>
+        <ol>
+            <li>Πηγαίουμε στην σελίδα για την προσθήκη slide <a href="<?php echo $this->url("slides"); ?>" target="_blank">πατώντας
+                    εδώ</a></li>
+            <li>Πατώντας πάνω στο κουμπί <strong>Add Slide</strong> εμφανίζεται η φόρμα για την προσθήκη ενός νέου slide.
+                <img src="<?php echo $this->basePath('images/help/slides.jpg'); ?>"/></li>
+            <li>Συμπληρώνουμε τα πεδία ώς εξής:<br/>
+                <ul>
+                    <li><strong>Post:</strong> Η ανάρτηση που θέλουμε να φαίνεται στο slide. Πρέπει να υπάρχει ήδη για να εμφανιστεί στην λίστα.</li>
+                    <li><strong>Position:</strong> Η θέση που θέλουμε να προβάλεται το slide. Πχ συμπληρώνουμε 3 αν θέλουμε να εμφανίζεται τρίτο κλπ.</li>
+                    <li><strong>Caption:</strong> Ένα μικρό σχόλιο για το slide.</li>
+                    <li><strong>Thumbnail (Προαιρετικό):</strong> Μια μεγαλύτερη εικόνα για το slide. <strong>Προτεινόμενες διαστάσεις: 560 πλάτος (width) και 325 ύψος (height) </strong><br/>
+                        Αν δεν προσθέσουμε μια εικόνα, τότε θα χρησιμοποιηθεί η εικόνα από την ανάρτηση που επιλέξαμε στο βήμα i.
+
+                    </li>
+                </ul>
+            </li>
+            <li>Πατάμε το κουμπί Add και είμαστε έτοιμοι, το slide έχει προστεθεί. (αν δεν υπήρξε κάποιο σφάλμα)</li>
+    </div>
+    <div id="addUser">
+        <h2>Για να προσθέσουμε ένα νέο διαχειριστή για το admin panel</h2>
+        <ol>
+            <li>Πηγαίουμε στην σελίδα για την προσθήκη <a href="<?php echo $this->url("users"); ?>" target="_blank">πατώντας
+                    εδώ</a></li>
+            <li>Πατώντας πάνω στο κουμπί <strong>Add User</strong> εμφανίζεται η φόρμα για την προσθήκη διαχειριστή
+                <img src="<?php echo $this->basePath('images/help/users.jpg'); ?>"/></li>
+            <li>Συμπληρώνουμε τα πεδία ώς εξής:<br/>
+                <ul>
+                    <li><strong>Username:</strong> Το όνομα χρήστη για τον διαχειριστή.</li>
+                    <li><strong>Password:</strong> Ο κωδικός του διαχειριστή.</li>
+                    <li><strong>Email (Προαιρετικό):</strong> Το email του διαχειριστή.</li>
+                </ul>
+            </li>
+            <li>Πατάμε το κουμπί Add και είμαστε έτοιμοι, ο διαχειριστής έχει προστεθεί. (αν δεν υπήρξε κάποιο σφάλμα)</li>
+    </div>
+</div>

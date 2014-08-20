@@ -64,6 +64,9 @@ if (!empty($messages)) :
                             <li>
                                 <a href="<?php echo $this->url('users'); ?>"<?php echo $route == "users" ? ' class="active"' : ''; ?>><?php echo $this->translate("Users"); ?></a>
                             </li>
+                            <li>
+                                <a href="<?php echo $this->url('help'); ?>"<?php echo $route == "help" ? ' class="active"' : ''; ?>><?php echo $this->translate("Help"); ?></a>
+                            </li>
                             <li><a
                                     href="<?php echo $this->url('logout'); ?>"><?php echo $this->translate("Logout"); ?></a>
                             </li>

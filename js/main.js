@@ -29,31 +29,6 @@ $(function () {
     });
 
     /* ===================================================== */
-    /*                       Tab Related                     */
-    var tabs = $('.tabs span');
-
-    tabs.each(function(){
-        var span = $(this);
-        var id = span.attr('class').split(' ')[0].substr(4);
-        if(span.hasClass('activeTab')){
-            $('#'+id).show();
-        }else{
-            $('#'+id).hide();
-        }
-    });
-
-    tabs.on('click',function(){
-        var span = $(this);
-        if(!span.hasClass('activeTab')){
-            var activeTab = span.siblings('.activeTab').removeClass('activeTab');
-            $('#'+activeTab.attr('class').split(' ')[0].substr(4)).fadeOut("normal",function(){
-                $('#'+span.attr('class').split(' ')[0].substr(4)).fadeIn();
-            });
-            span.addClass('activeTab');
-        }
-    });
-
-    /* ===================================================== */
     /*                   Slide Show Related                  */
 
     var slideShowInterval = null;
