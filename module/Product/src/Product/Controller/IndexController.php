@@ -11,7 +11,9 @@ namespace Product\Controller;
 
 use Application\Controller\BaseController;
 use Application\Model\FileUtils;
+use Doctrine\Common\Cache\ApcCache;
 use Doctrine\ORM\EntityRepository;
+use Zend\Cache\StorageFactory;
 use Zend\Http\Request;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
@@ -26,6 +28,8 @@ class IndexController extends BaseController
 {
     const LAYOUT_ADMIN = "layout/admin";
 
+    const CACHE_TAG_CATEGORIES = "categories_list";
+
     private $categoryRepository;
 
     private $productForm;
@@ -36,7 +40,14 @@ class IndexController extends BaseController
 
     public function indexAction()
     {
-        $categories = $this->getCategoryRepository()->findBy(array("parentCategory" => null), array("position" => "ASC"));
+        $cache = $this->getCacheService();
+        if($this->getCacheService()->isUpdateRequired(self::CACHE_TAG_CATEGORIES)){
+            $categories = $this->getCategoryRepository()->findBy(array("parentCategory" => null), array("position" => "ASC"));
+            $cache->getAdapter()->setItem(self::CACHE_TAG_CATEGORIES,serialize($categories));
+        }else{
+            $categories = unserialize($cache->getAdapter()->getItem(self::CACHE_TAG_CATEGORIES));
+        }
+        $cache->unsetCacheUpdate(self::CACHE_TAG_CATEGORIES);
         return new ViewModel(array(
             "categories" => $categories,
             "pageTitle" => "Products"

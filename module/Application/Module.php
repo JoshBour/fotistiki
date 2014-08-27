@@ -18,16 +18,22 @@ class Module
     public function onBootstrap(MvcEvent $e)
     {
         $session = new Container('base');
-        $translator = $e -> getApplication() -> getServiceManager() -> get('translator');
-        if (empty($session -> locale)) {
+        $translator = $e->getApplication()->getServiceManager()->get('translator');
+        if (empty($session->locale)) {
             $locale = 'en_US';
         } else {
-            $locale = $session -> locale;
+            $locale = $session->locale;
         }
-        $translator -> setLocale($locale) -> setFallbackLocale('en_US');
+        $translator->setLocale($locale)->setFallbackLocale('en_US');
 //        $translator->setLocale(\Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']));
 //            ->setFallbackLocale('el_GR');
         $this->bootstrapSession($e);
+        $response = $e->getResponse();
+        if ($response instanceof \Zend\Http\Response) {
+            $headers = $response->getHeaders();
+            if ($headers)
+                $headers->addHeaderLine('Content-Type', 'text/html;charset=UTF-8');
+        }
     }
 
     public function bootstrapSession($e)

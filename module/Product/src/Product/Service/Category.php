@@ -10,6 +10,7 @@ namespace Product\Service;
 
 
 use Application\Service\BaseService;
+use Doctrine\Common\Cache\ApcCache;
 use Doctrine\ORM\EntityRepository;
 use Product\Entity\Category as CategoryEntity;
 use Zend\Filter\File\Rename;
@@ -21,6 +22,8 @@ use Zend\Filter\File\Rename;
  */
 class Category extends BaseService
 {
+
+    const CACHE_TAG_CATEGORIES = "categories_list";
 
     /**
      * Create a new category
@@ -71,6 +74,7 @@ class Category extends BaseService
         try {
             $em->persist($category);
             $em->flush();
+            $this->getCacheService()->setCacheUpdate(self::CACHE_TAG_CATEGORIES);
             return true;
         } catch (\Exception $e) {
             return false;
@@ -119,6 +123,7 @@ class Category extends BaseService
         }
         try {
             $em->flush();
+            $this->getCacheService()->setCacheUpdate(self::CACHE_TAG_CATEGORIES);
             return true;
         } catch (\Exception $e) {
             return false;
@@ -139,6 +144,7 @@ class Category extends BaseService
             try {
                 $em->remove($category);
                 $em->flush();
+                $this->getCacheService()->setCacheUpdate(self::CACHE_TAG_CATEGORIES);
                 return true;
             } catch (\Exception $e) {
                 return false;
@@ -146,5 +152,4 @@ class Category extends BaseService
         }
         return false;
     }
-
 } 

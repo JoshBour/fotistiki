@@ -12,6 +12,7 @@ namespace Product\Service;
 use Application\Model\StringUtils;
 use Application\Service\BaseService;
 use Application\Service\FileUtils;
+use Doctrine\Common\Cache\ApcCache;
 use Doctrine\ORM\EntityRepository;
 use Product\Entity\Attribute;
 use Product\Entity\Product as ProductEntity;
@@ -32,6 +33,8 @@ use Zend\Filter\File\Rename;
  */
 class Product extends BaseService
 {
+
+    const CACHE_TAG_RELOAD_PRODUCTS = "reload_products";
 
     /**
      * Create a new product
@@ -194,6 +197,7 @@ class Product extends BaseService
             if (isset($extraData['productVariations'])) $product->setProductVariations($variationList);
             $em->persist($product);
             $em->flush();
+            $this->setCacheUpdate();
             return true;
         } catch (\Exception $e) {
             echo $e->getMessage();
@@ -336,6 +340,7 @@ class Product extends BaseService
         }
         try {
             $em->flush();
+            $this->setCacheUpdate();
             return true;
         } catch (\Exception $e) {
             return false;
@@ -368,5 +373,8 @@ class Product extends BaseService
         return false;
     }
 
+    private function setCacheUpdate(){
+        $this->getCache()->setItem(self::CACHE_TAG_RELOAD_PRODUCTS, 1);
+    }
 
 } 

@@ -10,9 +10,16 @@ namespace Application\Service;
 
 use Zend\ServiceManager\ServiceManager;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
+use Application\Service\Cache;
 
 class BaseService implements ServiceManagerAwareInterface
 {
+
+    /**
+     * @var Cache
+     */
+    protected $cacheService;
+
     /**
      * The entity manager
      *
@@ -44,6 +51,15 @@ class BaseService implements ServiceManagerAwareInterface
         $entity = ucfirst(substr($name,3,strlen($name) - 13));
         $namespace = ucfirst($variables[0]);
         return $this->getEntityManager()->getRepository("{$namespace}\\Entity\\{$entity}");
+    }
+
+    /**
+     * @return Cache
+     */
+    public function getCacheService(){
+        if(null === $this->cacheService)
+            $this->cacheService = $this->getServiceManager()->get('cache_service');
+        return $this->cacheService;
     }
 
     /**

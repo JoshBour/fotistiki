@@ -1,5 +1,5 @@
 <head>
-    <?php
+<?php
     $child = $this->child;
     $isMobile = $this->mobile();
     $route = $this->routeName();
@@ -40,5 +40,5 @@
 
     // Some scripts the must be outputted first follow below
     ?>
-    <script>var baseUrl = '<?php echo $this->basePath(); ?>',isMobile = <?php echo $isMobile ? 'true':'false'; ?>;</script>
+<script>/*<![CDATA[*/var baseUrl="<?php echo $this->basePath(); ?>",isMobile=<?php echo $isMobile ? 'true':'false'; ?>;/*]]>*/</script>
 </head>

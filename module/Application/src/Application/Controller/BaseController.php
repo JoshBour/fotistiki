@@ -11,9 +11,15 @@ namespace Application\Controller;
 use Application\Initializer\EntityManagerAwareInterface;
 use Application\Initializer\VocabularyAwareInterface;
 use Zend\Mvc\Controller\AbstractActionController;
+use Application\Service\Cache;
 
 class BaseController extends AbstractActionController implements EntityManagerAwareInterface, VocabularyAwareInterface
 {
+
+    /**
+     * @var Cache
+     */
+    protected $cacheService;
 
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -29,6 +35,15 @@ class BaseController extends AbstractActionController implements EntityManagerAw
      * @var array
      */
     protected $vocabulary;
+
+    /**
+     * @return Cache
+     */
+    public function getCacheService(){
+        if(null === $this->cacheService)
+            $this->cacheService = $this->getServiceLocator()->get('cache_service');
+        return $this->cacheService;
+    }
 
     /**
      * Get the entity manager

@@ -1,8 +1,8 @@
 <div id="returnNav">
-    <a href="<?php echo $this->url('products_index'); ?>" class="returnLink">Product Categories</a>
+<a href="<?php echo $this->url('products_index'); ?>" class="returnLink">Product Categories</a>
 </div>
 <div id="products">
-    <?php
+<?php
     /**
      * @var \Product\Entity\Category $category
      */
@@ -10,19 +10,18 @@
         $products = $category->getProducts();
         if ($products->count() > 0):
             ?>
-            <div class="category">
-                <div class="categoryInfo">
-                    <img src="<?php echo $this->basePath('images/categories/' . $category->getThumbnail()); ?>"/>
-
-                    <h2><?php echo $category->getName(); ?></h2>
-                </div>
-                <ul class="categoryProducts">
-                    <?php foreach ($products as $key => $product)
+<div class="category">
+<div class="categoryInfo">
+<img src="<?php echo $this->basePath('images/categories/' . $category->getThumbnail()); ?>"/>
+<h2><?php echo $category->getName(); ?></h2>
+</div>
+<ul class="categoryProducts">
+<?php foreach ($products as $key => $product)
                         echo $this->partial('product', array("product" => $product, "includeName" => false, "category" => $category, "key" => $key, "mod"=>3));
                     ?>
-                </ul>
-            </div>
-        <?php
+</ul>
+</div>
+<?php
         endif;
     endforeach;
     ?>

@@ -266,6 +266,7 @@ return array(
             'about_category_service' => __NAMESPACE__ . '\Service\AboutCategory',
             'slide_service' => __NAMESPACE__ . '\Service\Slide',
             'content_service' => __NAMESPACE__ . '\Service\Content',
+            'cache_service' => __NAMESPACE__ . '\Service\Cache',
             'file_util_service' => __NAMESPACE__ . '\Service\FileUtils',
         ),
         'abstract_factories' => array(
