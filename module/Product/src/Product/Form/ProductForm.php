@@ -38,6 +38,7 @@ class ProductForm extends Form{
                 'description',
                 'datasheet',
                 'thumbnail',
+                'image',
                 'specifications',
                 'category'
             )

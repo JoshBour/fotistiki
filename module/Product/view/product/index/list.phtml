@@ -22,6 +22,7 @@
 <th><?php echo $this->translate("Attributes"); ?>*</th>
 <th><?php echo $this->translate("Datasheet"); ?></th>
 <th><?php echo $this->translate("Thumbnail"); ?></th>
+<th><?php echo $this->translate("Image"); ?></th>
 <th><?php echo $this->translate("Specifications"); ?></th>
 <th><?php echo $this->translate("Related Products"); ?></th>
 <th><?php echo $this->translate("Product Variations"); ?></th>
@@ -71,6 +72,12 @@
                 echo $this->formFile($fieldset->get('thumbnail'));
                 echo $this->formElementErrors($fieldset->get('thumbnail'), array('class' => 'formError'));
                 ?>
+</td>
+<td>
+    <?php
+    echo $this->formFile($fieldset->get('image'));
+    echo $this->formElementErrors($fieldset->get('image'), array('class' => 'formError'));
+    ?>
 </td>
 <td>
 <?php
@@ -125,6 +132,7 @@
 <th><?php echo $this->translate("Attributes"); ?></th>
 <th><?php echo $this->translate("Datasheet"); ?></th>
 <th><?php echo $this->translate("Thumbnail"); ?></th>
+<th><?php echo $this->translate("Image"); ?></th>
 <th><?php echo $this->translate("Specifications"); ?></th>
 <th><?php echo $this->translate("Related Products"); ?></th>
 <th><?php echo $this->translate("Product Variations"); ?></th>
@@ -140,6 +148,7 @@
         foreach ($this->products as $product):
             $datasheet = $product->getDatasheet();
             $thumbnail = $product->getThumbnail();
+            $image = $product->getImage();
             $specifications = $product->getSpecifications();
             $relatedProducts = $product->getRelatedProducts();
             $productVariations = $product->getProductVariations();
@@ -178,7 +187,12 @@
 <td class="productThumbnail editImage">
 <span class="fileMeta invisible">images/products/<?php echo uniqid("product_") . rand(1000000, 9999999); ?>
 .jpg</span>
-<span class="fileImage"><?php echo $thumbnail ? '<img src="' . $this->basePath('images/products/' . $thumbnail) . '" alt="' . $this->translate("product image") . '" />' : ' - '; ?></span>
+<span class="fileImage"><?php echo $thumbnail ? '<img src="' . $this->basePath('images/products/' . $thumbnail) . '" alt="' . $this->translate("product thumbnail") . '" />' : ' - '; ?></span>
+</td>
+<td class="productImage editImage">
+<span class="fileMeta invisible">images/products/<?php echo uniqid("product_big_") . rand(1000000, 9999999); ?>
+.jpg</span>
+    <span class="fileImage"><?php echo $image ? '<img src="' . $this->basePath('images/products/' . $image) . '" alt="' . $this->translate("product image") . '" />' : ' - '; ?></span>
 </td>
 <td class="productSpecifications editImage">
 <span class="fileMeta invisible">images/products/<?php echo uniqid("specifications_") . rand(1000000, 9999999); ?>

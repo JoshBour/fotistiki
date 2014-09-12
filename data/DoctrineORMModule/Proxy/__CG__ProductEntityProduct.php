@@ -64,10 +64,10 @@ class Product extends \Product\Entity\Product implements \Doctrine\ORM\Proxy\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'attributes', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'productId', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'productNumber', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'name', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'description', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'datasheet', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'thumbnail', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'specifications', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'relatedProducts', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'category', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'relatedToProducts', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'productVariations', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'variationToProducts');
+            return array('__isInitialized__', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'attributes', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'productId', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'productNumber', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'name', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'description', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'datasheet', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'thumbnail', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'image', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'specifications', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'relatedProducts', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'category', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'relatedToProducts', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'productVariations', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'variationToProducts');
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'attributes', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'productId', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'productNumber', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'name', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'description', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'datasheet', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'thumbnail', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'specifications', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'relatedProducts', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'category', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'relatedToProducts', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'productVariations', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'variationToProducts');
+        return array('__isInitialized__', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'attributes', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'productId', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'productNumber', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'name', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'description', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'datasheet', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'thumbnail', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'image', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'specifications', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'relatedProducts', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'category', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'relatedToProducts', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'productVariations', '' . "\0" . 'Product\\Entity\\Product' . "\0" . 'variationToProducts');
     }
 
     /**
@@ -281,6 +281,28 @@ class Product extends \Product\Entity\Product implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDescription', array());
 
         return parent::getDescription();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setImage($image)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setImage', array($image));
+
+        return parent::setImage($image);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getImage($useDefault = true)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getImage', array($useDefault));
+
+        return parent::getImage($useDefault);
     }
 
     /**

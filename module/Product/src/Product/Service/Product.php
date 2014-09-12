@@ -96,6 +96,32 @@ class Product extends BaseService
         } else {
             $product->setThumbnail(null);
         }
+        if (!empty($data['product']['image'])) {
+            switch ($data['product']['image']['type']) {
+                case 'image/jpeg':
+                    $extension = 'jpg';
+                    break;
+                case 'image/png':
+                    $extension = 'png';
+                    break;
+                case 'image/gif':
+                    $extension = 'gif';
+                    break;
+                default:
+                    return false;
+            }
+            $uniqueId = uniqid('product_big_');
+            $loc = ROOT_PATH . '/images/products/' . $uniqueId . '.' . $extension;
+            $filter = new Rename(array(
+                'target' => $loc,
+                'overwrite' => true
+            ));
+            $filter->filter($data['product']['image']);
+            chmod($loc, 0644);
+            $product->setImage($uniqueId . '.' . $extension);
+        } else {
+            $product->setImage(null);
+        }
         if (!empty($data['product']['specifications'])) {
             switch ($data['product']['specifications']['type']) {
                 case 'image/jpeg':
@@ -197,7 +223,6 @@ class Product extends BaseService
             if (isset($extraData['productVariations'])) $product->setProductVariations($variationList);
             $em->persist($product);
             $em->flush();
-            $this->setCacheUpdate();
             return true;
         } catch (\Exception $e) {
             echo $e->getMessage();
@@ -319,6 +344,14 @@ class Product extends BaseService
                         rename($loc . $value, $loc . $templess[0] . '.' . $splitName[1]);
                         if (!empty($thumbnail)) unlink($loc . $thumbnail);
                         $product->setThumbnail($templess[0] . '.' . $splitName[1]);
+                    } else if ($key == "Image") {
+                        $image = $product->getImage(false);
+                        $loc = ROOT_PATH . '/images/products/';
+                        $splitName = explode('.', $value);
+                        $templess = explode('-', $splitName[0]);
+                        rename($loc . $value, $loc . $templess[0] . '.' . $splitName[1]);
+                        if (!empty($image)) unlink($loc . $image);
+                        $product->setImage($templess[0] . '.' . $splitName[1]);
                     } else if ($key == "Specifications") {
                         $thumbnail = $product->getSpecifications(false);
                         $loc = ROOT_PATH . '/images/products/';
@@ -340,7 +373,6 @@ class Product extends BaseService
         }
         try {
             $em->flush();
-            $this->setCacheUpdate();
             return true;
         } catch (\Exception $e) {
             return false;
@@ -371,10 +403,6 @@ class Product extends BaseService
             }
         }
         return false;
-    }
-
-    private function setCacheUpdate(){
-        $this->getCache()->setItem(self::CACHE_TAG_RELOAD_PRODUCTS, 1);
     }
 
 } 

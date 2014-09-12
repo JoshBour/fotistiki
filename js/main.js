@@ -138,7 +138,7 @@ $(function () {
 
     $('.magnifiable').on('click',function(){
         var img = $(this);
-        var imgSrc = img.attr('src');
+        var imgSrc = img.hasClass('productThumbnail') ? img.next('.productImage').attr('src') : img.attr('src');
         var stageWrapper = $('<div/>', {
             'id': "stageWrapper",
         }).prependTo($('body'));

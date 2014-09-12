@@ -59,6 +59,11 @@ class Product {
     /**
      * @ORM\Column(type="string", length=150, nullable=true)
      */
+    private $image;
+
+    /**
+     * @ORM\Column(type="string", length=150, nullable=true)
+     */
     private $specifications;
 
     /**
@@ -175,6 +180,24 @@ class Product {
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+
+    /**
+     * @param bool $useDefault
+     * @return string
+     */
+    public function getImage($useDefault = true)
+    {
+
+        return !$this->image && $useDefault ? "../default-light.png" : $this->image;
     }
 
     /**

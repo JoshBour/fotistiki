@@ -57,6 +57,11 @@ class ProductFieldset extends BaseFieldset implements InputFilterProviderInterfa
         ));
 
         $this->add(array(
+            "name" => "image",
+            "type" => "file"
+        ));
+
+        $this->add(array(
             "name" => "specifications",
             "type" => "file"
         ));
@@ -204,6 +209,20 @@ class ProductFieldset extends BaseFieldset implements InputFilterProviderInterfa
                         'options' => array(
                             'messages' => array(
                                 NotEmpty::IS_EMPTY => $this->getTranslator()->translate($vocabulary["ERROR_THUMBNAIL_EMPTY"])
+                            )
+                        )
+                    ),
+                ),
+            ),
+            'image' => array(
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'break_chain_on_failure' => true,
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY => $this->getTranslator()->translate($vocabulary["ERROR_IMAGE_EMPTY"])
                             )
                         )
                     ),

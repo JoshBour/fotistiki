@@ -291,7 +291,18 @@ $(function () {
             var u = $("<div/>", {id: "textareaWrapper"}).appendTo(o);
             var a = $("<textarea/>", {id: "stageTextarea", html: i.val()}).appendTo(u);
             var f = $("<span />", {"class": "done", html: "Done"}).appendTo(u);
-            a.sceditor({plugins: "xhtml", style: "../css/scedit/jquery.sceditor.default.min.css", emoticonsRoot: "../images/", disallowedTags: ["script", "div"]});
+            // Push this converter onto the end of the converters array
+            $.sceditor.plugins.xhtml.disallowedAttribs = {
+                // The * sign matches every tags so this will allow the id
+                // and class attributes on all tags
+                '*': {
+                    style: null,
+                    'class': null,
+                    'id': null,
+                    "div":null
+                },
+            };
+            a.sceditor({plugins: "xhtml", style: "../css/scedit/jquery.sceditor.default.min.css", emoticonsRoot: "../images/", disallowedTags: ["style", "div"]});
             r = s;
             s.focusLight();
             body.addClass("unscrollable")

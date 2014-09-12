@@ -399,7 +399,8 @@ body {
     display: inline-block;
     margin: 20px 40px 20px 35px;
     opacity: .8;
-    padding: 0
+    padding: 0;
+    width: 167px;
 }
 
 #categories li.notFound {
@@ -418,28 +419,29 @@ body {
     display: block
 }
 
-#categories li.product {
-    opacity: 1
+/*#categories li.product {*/
+    /*opacity: 1*/
+/*}*/
+
+#categories li.product:hover {
+    border-color:transparent;
 }
 
 #categories li.product:hover img {
-    border: 1px solid #222
+    border: 1px solid #cfcfcf;
 }
 
-#categories .product a {
-    color: #aaa
-}
+/*#categories .product a {*/
+    /*color: #aaa*/
+/*}*/
 
 #categories .product span {
     margin-top: 7px;
-    font-size: 14px
 }
 
 #categories .product img {
-    width: 200px;
-    height: 110px;
-    background: #151515;
-    border: 1px solid #111
+    background: #dbdbdd;
+    border:1px solid transparent;
 }
 
 .search {
@@ -579,7 +581,7 @@ body {
 .productAttributes tbody tr:hover {
     cursor: pointer;
     border-bottom: 1px solid #aaa;
-    background-color: #eaeaea
+    background-color: #ddd
 }
 
 .productAttributes tbody tr.active {
@@ -695,7 +697,8 @@ tr.productMeta a:hover {
 .aboutPage #main {
     float: right;
     width: 79%;
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .aboutPage #main img {
@@ -961,7 +964,7 @@ input[type=checkbox] {
 }
 
 .invisible {
-    display: none
+    display: none !important;
 }
 
 .blackBorder {

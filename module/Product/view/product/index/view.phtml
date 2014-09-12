@@ -24,6 +24,7 @@ $price = $product->getPrice();
 <h1><?php echo $product->getName(); ?></h1>
 <div class="productPhotos">
 <img class="productThumbnail magnifiable" src="<?php echo $this->basePath('images/products/' . $product->getThumbnail()); ?>"/>
+<img class="productImage invisible" src="<?php echo $this->basePath('images/products/' . $product->getImage()); ?>"/>
 <img class="productSpecifications magnifiable" src="<?php echo $this->basePath('images/products/' . $product->getSpecifications()); ?>"/>
 </div>
 <div itemscope itemtype="http://schema.org/Product" class="invisible">
