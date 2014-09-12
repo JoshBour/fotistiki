@@ -49,6 +49,10 @@ textarea {
     resize: vertical
 }
 
+strong{
+    font-weight: bold;
+}
+
 body {
     font-family: 'Source Sans Pro', sans-serif;
     color: #000;
@@ -703,6 +707,11 @@ tr.productMeta a:hover {
 
 .aboutPage #main img {
     box-shadow: 3px 3px 15px #aaa
+}
+
+.aboutPage #main ul{
+    list-style: disc;
+    padding-left:20px;
 }
 
 .partner {

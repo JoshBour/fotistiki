@@ -299,8 +299,9 @@ $(function () {
                     style: null,
                     'class': null,
                     'id': null,
-                    "div":null
-                },
+                    "div":null,
+                    "lang":null
+                }
             };
             a.sceditor({plugins: "xhtml", style: "../css/scedit/jquery.sceditor.default.min.css", emoticonsRoot: "../images/", disallowedTags: ["style", "div"]});
             r = s;

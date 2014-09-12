@@ -140,7 +140,7 @@ $(function () {
         var img = $(this);
         var imgSrc = img.hasClass('productThumbnail') ? img.next('.productImage').attr('src') : img.attr('src');
         var stageWrapper = $('<div/>', {
-            'id': "stageWrapper",
+            'id': "stageWrapper"
         }).prependTo($('body'));
 
         var stage = $('<div/>', {
